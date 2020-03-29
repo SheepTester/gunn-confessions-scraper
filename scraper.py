@@ -1,3 +1,4 @@
+from datetime import datetime
 from pyquery import PyQuery
 import requests
 import json
@@ -42,7 +43,7 @@ def make_post(post_id_to_feedback, confessionElem):
     text = confessionElem.text()
 
     post_link = confessionElem.parent().find('span > a._5pcq')
-    post_id = re.match(get_post_id, post_link.attr('href')).group(1)
+    post_id = re.search(get_post_id, post_link.attr('href')).group(1)
     feedback = post_id_to_feedback[post_id]
 
     timestamp = int(post_link.find('[data-utime]').attr('data-utime'))
@@ -55,7 +56,7 @@ def make_post(post_id_to_feedback, confessionElem):
 
     return Post(post_id, text, timestamp, comments, reactions)
 
-def fetch_posts(posts, path, first):
+def fetch_posts(path, first):
     if first:
         page = PyQuery(facebook_base + path)
         epic_script_tag = page.find('script').filter(is_epic_script_tag)
@@ -71,16 +72,20 @@ def fetch_posts(posts, path, first):
         id = feedback_thing['share_fbid']
         post_id_to_feedback[id] = feedback_thing
 
-    posts.extend(make_post(post_id_to_feedback, confession) for confession in page.find('._3576').items())
-
-    if not first:
-        return posts
+    posts = [make_post(post_id_to_feedback, confession) for confession in page.find('._3576').items()]
 
     see_more = page.find('#www_pages_reaction_see_more_unitwww_pages_posts a[ajaxify]').attr('ajaxify')
-    fetch_posts(posts, see_more + '&__a=1', False)
-    return posts
+    return (posts, see_more + '&__a=1' if see_more is not None else None)
 
-posts = fetch_posts([], '/pg/gunnconfessions/posts/', True)
+temp_file = open('./output/_posts.json', 'w', encoding='utf-8')
 
-with open('./posts.json', 'w', encoding='utf-8') as file:
-    file.write(json.dumps(posts))
+(posts, next) = fetch_posts('/pg/Test-Confessions-Page/posts/', True)
+while next:
+    (morePosts, next) = fetch_posts(next, False)
+    posts += morePosts
+    temp_file.write(json.dumps([post.__dict__ for post in posts]))
+
+temp_file.close()
+
+with open('./output/posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S'), 'w', encoding='utf-8') as file:
+    file.write(json.dumps([post.__dict__ for post in posts], indent=2))

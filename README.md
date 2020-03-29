@@ -24,3 +24,7 @@ If it works, you won't forget to do `deactivate` because it'll keep printing `(.
 Then do whatever `pip install` magic is necessary.
 
 To save requirements.txt, do `pip freeze > requirements.txt`. To load from it, do `pip install -r requirements.txt`
+
+There exists a `pdb` for debugging Python stuff. Do `python -m pdb -c continue scraper.py` to pause on exception ([src](https://stackoverflow.com/a/2438834)). [Commands](https://docs.python.org/3/library/pdb.html#debugger-commands)
+
+`p expression` runs `expression`
