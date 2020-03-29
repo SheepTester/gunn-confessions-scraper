@@ -18,29 +18,58 @@ def searchJSON(matches, match_fn, json):
     elif isinstance(json, dict):
         for val in json.values():
             searchJSON(matches, match_fn, val)
+    return matches
 
 get_num = r'/gunnconfessions/posts/(\d+)'
 
+class Post:
+    def __init__(self, content, timestamp, comments, reactions):
+        self.content = content
+        self.timestamp = timestamp
+        self.comments = comments
+        self.reactions = reactions
+
+    def __repr__(self):
+        return 'Post(%s, %s, %s, %s)' % (self.content, self.timestamp, self.comments, self.reactions)
+
+def is_epic_script_tag(i, this):
+    return PyQuery(this).text().startswith('new (require("ServerJS"))()')
+def is_feedback(json):
+    return isinstance(json, dict) and 'share_fbid' in json
+
+posts = []
+
 page = PyQuery(facebook_base + '/pg/gunnconfessions/posts/')
-epic_script_tag = page.find('script').filter(lambda i, this: PyQuery(this).text().startswith('new (require("ServerJS"))()'))
+
+# Get feedback things from the epic script tag...
+epic_script_tag = page.find('script').filter(is_epic_script_tag)
 post_info = json.loads(epic_script_tag.text()[35:-2])
-is_feedback = lambda json: isinstance(json, dict) and 'feedback' in json
-feedback_things = []
-searchJSON(feedback_things, is_feedback, post_info)
+feedback_things = searchJSON([], is_feedback, post_info)
 post_id_to_feedback = {}
 for feedback_thing in feedback_things:
-    id = feedback_thing['feedback']['share_fbid']
-    post_id_to_feedback[id] = feedback_thing['feedback']
-for confession in page.find('._3576').items():
-    # print('#1: ' + confession.text())
-    post_link = confession.parent().find('span > a._5pcq').attr('href')
-    post_id = re.match(get_num, post_link).group(1)
-    # page = PyQuery(facebook_base + post_link)
-    # print(facebook_base + post_link)
-    # print(post_id + ' ' + str(post_id in post_id_to_feedback))
-    with open('./dumb-fb.json', 'w', encoding='utf-8') as f:
-        f.write(json.dumps(post_id_to_feedback[post_id], indent=2))
-    break
+    id = feedback_thing['share_fbid']
+    post_id_to_feedback[id] = feedback_thing
+
+def make_post(confessionElem):
+    text = confessionElem.text()
+
+    post_link = confessionElem.parent().find('span > a._5pcq')
+    post_id = re.match(get_num, post_link.attr('href')).group(1)
+    feedback = post_id_to_feedback[post_id]
+
+    timestamp = int(post_link.find('[data-utime]').attr('data-utime'))
+    comments = feedback['comment_count']['total_count']
+
+    reactions = {}
+    if 'top_reactions' in feedback:
+        for reaction in feedback['top_reactions']['edges']:
+            reactions[reaction['node']['reaction_type']] = reaction['reaction_count']
+
+    return Post(text, timestamp, comments, reactions)
+
+posts += map(make_post, page.find('._3576').items())
+
+print(posts)
 
 # see_more = page.find('#www_pages_reaction_see_more_unitwww_pages_posts a[ajaxify]').attr('ajaxify')
 # # For some reason `__a=1` is necessary
