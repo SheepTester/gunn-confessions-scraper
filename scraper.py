@@ -1,5 +1,6 @@
 from datetime import datetime
 from pyquery import PyQuery
+import urllib.parse
 import requests
 import json
 import re
@@ -10,18 +11,20 @@ import re
 
 facebook_base = 'https://www.facebook.com'
 
-def searchJSON(matches, match_fn, json):
+def search_json(matches, match_fn, json):
     if match_fn(json):
         matches.append(json)
     elif isinstance(json, list):
         for item in json:
-            searchJSON(matches, match_fn, item)
+            search_json(matches, match_fn, item)
     elif isinstance(json, dict):
         for val in json.values():
-            searchJSON(matches, match_fn, val)
+            search_json(matches, match_fn, val)
     return matches
 
 get_post_id = r'/posts/(\d+)'
+get_confession_number = r'^(\d+)\. '
+external_link = 'l.facebook.com'
 
 class Post:
     def __init__(self, post_id, content, timestamp, comments, reactions):
@@ -39,11 +42,15 @@ def is_epic_script_tag(i, this):
 def is_feedback(json):
     return isinstance(json, dict) and 'share_fbid' in json
 
-def make_post(post_id_to_feedback, confessionElem):
-    text = confessionElem.text()
+number = 0
+def make_post(post_id_to_feedback, confession):
+    global number
+    number += 1
+    print('#%d' % number)
 
-    post_link = confessionElem.parent().find('span > a._5pcq')
-    post_id = re.search(get_post_id, post_link.attr('href')).group(1)
+    post_link = confession.parent().find('span > a._5pcq')
+    post_url = post_link.attr('href')
+    post_id = re.search(get_post_id, post_url).group(1)
     feedback = post_id_to_feedback[post_id]
 
     timestamp = int(post_link.find('[data-utime]').attr('data-utime'))
@@ -54,6 +61,29 @@ def make_post(post_id_to_feedback, confessionElem):
         for reaction in feedback['top_reactions']['edges']:
             reactions[reaction['node']['reaction_type']] = reaction['reaction_count']
 
+    expandPost = confession.find('.text_exposed_link')
+    if expandPost.length > 0:
+        if False and expandPost.find('.see_more_link_inner').text().lower() == 'see more':
+            # If it's "See more," then the post is actually already loaded, but
+            # visually hidden.
+            confession.find('.text_exposed_hide').remove()
+        else:
+            confession = PyQuery(facebook_base + post_url, headers={'cookie': 'noscript=1'}).find('._3576')
+
+    for link in confession.find('a[target=_blank]').items():
+        parsed_url = urllib.parse.urlparse(link.attr('href'))
+        extlink_query = urllib.parse.parse_qs(parsed_url.query).get('u')
+        if parsed_url.netloc == external_link and extlink_query and '…' in link.text():
+            link.text(extlink_query[0])
+
+    text = confession.text()
+    confession_number_match = re.search(get_confession_number, text)
+    if confession_number_match:
+        confession_number = int(confession_number_match.group(1))
+    else:
+        print('Not a confession')
+        confession_number = 0
+
     return Post(post_id, text, timestamp, comments, reactions)
 
 def fetch_posts(path, first):
@@ -62,11 +92,11 @@ def fetch_posts(path, first):
         epic_script_tag = page.find('script').filter(is_epic_script_tag)
         post_info = json.loads(epic_script_tag.text()[35:-2])
     else:
-        response = json.loads(requests.get(facebook_base + path).content[9:])
+        response = json.loads(requests.get(facebook_base + path).text[9:])
         page = PyQuery(response['domops'][0][3]['__html'])
         post_info = response['jsmods']
 
-    feedback_things = searchJSON([], is_feedback, post_info)
+    feedback_things = search_json([], is_feedback, post_info)
     post_id_to_feedback = {}
     for feedback_thing in feedback_things:
         id = feedback_thing['share_fbid']
@@ -84,7 +114,7 @@ pages = 1
 while next:
     (morePosts, next) = fetch_posts(next, False)
     posts += morePosts
-    temp_file.write(json.dumps([post.__dict__ for post in posts]))
+    temp_file.write(json.dumps([post.__dict__ for post in posts], indent=2))
     print('Page %d fetched' % pages)
 
     pages += 1
