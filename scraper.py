@@ -23,8 +23,15 @@ def search_json(matches, match_fn, json):
     return matches
 
 get_post_id = r'/posts/(\d+)'
-get_confession_number = r'^(\d+)\. '
+confession_number_regex = r'^(\d+)\. '
 external_link = 'l.facebook.com'
+
+def get_confession_number(confession_text):
+    confession_number_match = re.search(confession_number_regex, confession_text)
+    if confession_number_match:
+        return int(confession_number_match.group(1))
+    else:
+        return 0
 
 class Post:
     def __init__(self, post_id, content, timestamp, comments, reactions):
@@ -42,12 +49,7 @@ def is_epic_script_tag(i, this):
 def is_feedback(json):
     return isinstance(json, dict) and 'share_fbid' in json
 
-number = 0
 def make_post(post_id_to_feedback, confession):
-    global number
-    number += 1
-    print('#%d' % number)
-
     post_link = confession.parent().find('span > a._5pcq')
     post_url = post_link.attr('href')
     post_id = re.search(get_post_id, post_url).group(1)
@@ -63,7 +65,7 @@ def make_post(post_id_to_feedback, confession):
 
     expandPost = confession.find('.text_exposed_link')
     if expandPost.length > 0:
-        if False and expandPost.find('.see_more_link_inner').text().lower() == 'see more':
+        if expandPost.find('.see_more_link_inner').text().lower() == 'see more':
             # If it's "See more," then the post is actually already loaded, but
             # visually hidden.
             confession.find('.text_exposed_hide').remove()
@@ -77,12 +79,6 @@ def make_post(post_id_to_feedback, confession):
             link.text(extlink_query[0])
 
     text = confession.text()
-    confession_number_match = re.search(get_confession_number, text)
-    if confession_number_match:
-        confession_number = int(confession_number_match.group(1))
-    else:
-        print('Not a confession')
-        confession_number = 0
 
     return Post(post_id, text, timestamp, comments, reactions)
 
@@ -115,11 +111,9 @@ while next:
     (morePosts, next) = fetch_posts(next, False)
     posts += morePosts
     temp_file.write(json.dumps([post.__dict__ for post in posts], indent=2))
-    print('Page %d fetched' % pages)
 
+    print('Page %d fetched' % pages)
     pages += 1
-    if pages > 1:
-        break
 
 temp_file.close()
 
