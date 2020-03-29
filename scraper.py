@@ -79,11 +79,17 @@ def fetch_posts(path, first):
 
 temp_file = open('./output/_posts.json', 'w', encoding='utf-8')
 
-(posts, next) = fetch_posts('/pg/Test-Confessions-Page/posts/', True)
+pages = 1
+(posts, next) = fetch_posts('/pg/gunnconfessions/posts/', True)
 while next:
     (morePosts, next) = fetch_posts(next, False)
     posts += morePosts
     temp_file.write(json.dumps([post.__dict__ for post in posts]))
+    print('Page %d fetched' % pages)
+
+    pages += 1
+    if pages > 1:
+        break
 
 temp_file.close()
 
