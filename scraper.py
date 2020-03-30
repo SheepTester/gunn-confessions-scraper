@@ -23,15 +23,7 @@ def search_json(matches, match_fn, json):
     return matches
 
 get_post_id = r'/posts/(\d+)'
-confession_number_regex = r'^(\d+)\. '
 external_link = 'l.facebook.com'
-
-def get_confession_number(confession_text):
-    confession_number_match = re.search(confession_number_regex, confession_text)
-    if confession_number_match:
-        return int(confession_number_match.group(1))
-    else:
-        return 0
 
 class Post:
     def __init__(self, post_id, content, timestamp, comments, reactions):
@@ -103,19 +95,20 @@ def fetch_posts(path, first):
     see_more = page.find('#www_pages_reaction_see_more_unitwww_pages_posts a[ajaxify]').attr('ajaxify')
     return (posts, see_more + '&__a=1' if see_more is not None else None)
 
-temp_file = open('./output/_posts.json', 'w', encoding='utf-8')
+if __name__ == '__main__':
+    temp_file = open('./output/_posts.json', 'w', encoding='utf-8')
 
-pages = 1
-(posts, next) = fetch_posts('/pg/gunnconfessions/posts/', True)
-while next:
-    (morePosts, next) = fetch_posts(next, False)
-    posts += morePosts
-    temp_file.write(json.dumps([post.__dict__ for post in posts], indent=2))
+    pages = 1
+    (posts, next) = fetch_posts('/pg/gunnconfessions/posts/', True)
+    while next:
+        (morePosts, next) = fetch_posts(next, False)
+        posts += morePosts
+        temp_file.write(json.dumps([post.__dict__ for post in posts], indent=2))
 
-    print('Page %d fetched' % pages)
-    pages += 1
+        print('Page %d fetched' % pages)
+        pages += 1
 
-temp_file.close()
+    temp_file.close()
 
-with open('./output/posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S'), 'w', encoding='utf-8') as file:
-    file.write(json.dumps([post.__dict__ for post in posts], indent=2))
+    with open('./output/posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S'), 'w', encoding='utf-8') as file:
+        file.write(json.dumps([post.__dict__ for post in posts], indent=2))
