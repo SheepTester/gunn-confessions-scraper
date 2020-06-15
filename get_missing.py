@@ -32,7 +32,7 @@ def fetch_missing_posts(filename, maxConf=None, minConf=1):
     temp_file = open('./output/_posts_less_missing.json', 'w', encoding='utf-8')
 
     since_last = 0
-    for i in range(maxConf, minConf, -1):
+    for i in range(maxConf, minConf - 1, -1):
         if i not in confessions:
             found = post.make_id_map(parse_search(str(i)))
             confessions.update(found)

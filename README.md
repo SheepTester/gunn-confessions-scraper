@@ -1,6 +1,12 @@
 # gunn-confessions-scraper
 Scrape stuff from Gunn Confessions' Facebook Page using Python (language diversity!) because Facebook won't give access to their proper APIs
 
+Try running
+
+```sh
+python get_all.py
+```
+
 ### Python notes
 
 To use Python in Git Bash, you need to add
