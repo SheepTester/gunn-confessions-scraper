@@ -21,17 +21,36 @@ def parse_search(query):
     post_id_to_feedback = scraper.parse_posts(search)
     return [scraper.make_post(post_id_to_feedback, confession) for confession in page.find('._307z').items()]
 
-if __name__ == '__main__':
-    with open('./output-dist/posts_2020-03-29_16.21.50.json', 'r', encoding='utf-8') as file:
+# conf = confession
+def fetch_missing_posts(filename, maxConf=None, minConf=1):
+    with open(filename, 'r', encoding='utf-8') as file:
         confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
 
-    max = 6752
+    if maxConf == None:
+        maxConf = max(confessions.keys())
 
-    for i in range(6750, max + 1):
+    temp_file = open('./output/_posts_less_missing.json', 'w', encoding='utf-8')
+
+    since_last = 0
+    for i in range(maxConf, minConf, -1):
         if i not in confessions:
             found = post.make_id_map(parse_search(str(i)))
             confessions.update(found)
-            print('Was missing confession #%d; found %s' % (i, ' '.join(map(str, found.keys()))))
+            print('Was missing confession #%d; found %s' % (i, ' '.join(map(str, found.keys())) or '[presumably deleted]'))
 
-    with open('./output/posts_%s_less_missing.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S'), 'w', encoding='utf-8') as file:
+            # Save every 20 iterations
+            since_last += 1
+            if since_last > 20:
+                temp_file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
+                since_last = 0
+                print('Saved')
+
+    temp_file.close()
+
+    filename = './output/posts_%s_less_missing.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
+    with open(filename, 'w', encoding='utf-8') as file:
         file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
+    return filename
+
+if __name__ == '__main__':
+    fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)

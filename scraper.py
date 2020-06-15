@@ -95,7 +95,7 @@ def fetch_posts(path, first):
     see_more = page.find('#www_pages_reaction_see_more_unitwww_pages_posts a[ajaxify]').attr('ajaxify')
     return (posts, see_more + '&__a=1' if see_more is not None else None)
 
-if __name__ == '__main__':
+def fetch_all_pages():
     temp_file = open('./output/_posts.json', 'w', encoding='utf-8')
 
     pages = 1
@@ -110,5 +110,10 @@ if __name__ == '__main__':
 
     temp_file.close()
 
-    with open('./output/posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S'), 'w', encoding='utf-8') as file:
+    filename = './output/posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
+    with open(filename, 'w', encoding='utf-8') as file:
         file.write(json.dumps([post.serialize() for post in posts], indent=2))
+    return filename
+
+if __name__ == '__main__':
+    fetch_all_pages()
