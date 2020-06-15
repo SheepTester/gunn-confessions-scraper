@@ -26,6 +26,9 @@ def fetch_missing_posts(filename, maxConf=None, minConf=1):
     with open(filename, 'r', encoding='utf-8') as file:
         confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
 
+    # Delete confession with key None (1st arg) and if it doesn't exist, return None (2nd arg)
+    confessions.pop(None, None)
+
     if maxConf == None:
         maxConf = max(confessions.keys())
 
