@@ -4,10 +4,13 @@ import urllib.parse
 import requests
 import json
 import re
+from post import Post
 
 # Class key
 # ._3576 - a <div>, the parent of each <p> in a post
 # ._5pcq - the timestamp that links to the post page
+# ._5-jo - The class for the <span> containing the confession text in search results
+# ._lie  - The post link in search results
 
 facebook_base = 'https://www.facebook.com'
 
@@ -24,17 +27,6 @@ def search_json(matches, match_fn, json):
 
 get_post_id = r'/posts/(\d+)'
 external_link = 'l.facebook.com'
-
-class Post:
-    def __init__(self, post_id, content, timestamp, comments, reactions):
-        self.content = content
-        self.post_id = post_id
-        self.timestamp = timestamp
-        self.comments = comments
-        self.reactions = reactions
-
-    def __repr__(self):
-        return 'Post(%s, %s, %s, %s, %s)' % (self.post_id, self.content, self.timestamp, self.comments, self.reactions)
 
 def is_epic_script_tag(i, this):
     return PyQuery(this).text().startswith('new (require("ServerJS"))()')
@@ -109,10 +101,9 @@ if __name__ == '__main__':
     pages = 1
     (posts, next) = fetch_posts('/pg/gunnconfessions/posts/', True)
     while next:
-        break
         (morePosts, next) = fetch_posts(next, False)
         posts += morePosts
-        temp_file.write(json.dumps([post.__dict__ for post in posts], indent=2))
+        temp_file.write(json.dumps([post.serialize() for post in posts], indent=2))
 
         print('Page %d fetched' % pages)
         pages += 1
@@ -120,4 +111,4 @@ if __name__ == '__main__':
     temp_file.close()
 
     with open('./output/posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S'), 'w', encoding='utf-8') as file:
-        file.write(json.dumps([post.__dict__ for post in posts], indent=2))
+        file.write(json.dumps([post.serialize() for post in posts], indent=2))
