@@ -41,8 +41,10 @@ def is_epic_script_tag(i, this):
 def is_feedback(json):
     return isinstance(json, dict) and 'share_fbid' in json
 
-def make_post(post_id_to_feedback, confession):
-    post_link = confession.parent().find('span > a._5pcq')
+def make_post(post_id_to_feedback, confessionWrapper):
+    confession = confessionWrapper.find('._3576, ._5-jo')
+
+    post_link = confessionWrapper.find('span > a._5pcq, ._lie')
     post_url = post_link.attr('href')
     post_id = re.search(get_post_id, post_url).group(1)
     feedback = post_id_to_feedback[post_id]
@@ -74,23 +76,29 @@ def make_post(post_id_to_feedback, confession):
 
     return Post(post_id, text, timestamp, comments, reactions)
 
+def parse_facebook_json(fb_json):
+    return json.loads(fb_json[9:])
+
+def parse_posts(post_info):
+    feedback_things = search_json([], is_feedback, post_info)
+    post_id_to_feedback = {}
+    for feedback_thing in feedback_things:
+        id = feedback_thing['share_fbid']
+        post_id_to_feedback[id] = feedback_thing
+    return post_id_to_feedback
+
 def fetch_posts(path, first):
     if first:
         page = PyQuery(facebook_base + path)
         epic_script_tag = page.find('script').filter(is_epic_script_tag)
         post_info = json.loads(epic_script_tag.text()[35:-2])
     else:
-        response = json.loads(requests.get(facebook_base + path).text[9:])
+        response = parse_facebook_json(requests.get(facebook_base + path).text)
         page = PyQuery(response['domops'][0][3]['__html'])
         post_info = response['jsmods']
 
-    feedback_things = search_json([], is_feedback, post_info)
-    post_id_to_feedback = {}
-    for feedback_thing in feedback_things:
-        id = feedback_thing['share_fbid']
-        post_id_to_feedback[id] = feedback_thing
-
-    posts = [make_post(post_id_to_feedback, confession) for confession in page.find('._3576').items()]
+    post_id_to_feedback = parse_posts(post_info)
+    posts = [make_post(post_id_to_feedback, confession.parent()) for confession in page.find('._3576').items()]
 
     see_more = page.find('#www_pages_reaction_see_more_unitwww_pages_posts a[ajaxify]').attr('ajaxify')
     return (posts, see_more + '&__a=1' if see_more is not None else None)
@@ -101,6 +109,7 @@ if __name__ == '__main__':
     pages = 1
     (posts, next) = fetch_posts('/pg/gunnconfessions/posts/', True)
     while next:
+        break
         (morePosts, next) = fetch_posts(next, False)
         posts += morePosts
         temp_file.write(json.dumps([post.__dict__ for post in posts], indent=2))

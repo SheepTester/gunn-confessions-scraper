@@ -1,6 +1,6 @@
 import re
 
-confession_number_regex = r'^(\d+)\. '
+confession_number_regex = r'(?:^|\n)(\d+)\. '
 
 def get_confession_number(confession_text):
     confession_number_match = re.search(confession_number_regex, confession_text)
