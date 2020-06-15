@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Backup json file
-output/_posts.json
+# Output from testing
+output
