@@ -79,6 +79,14 @@ def parse_posts(post_info):
         post_id_to_feedback[id] = feedback_thing
     return post_id_to_feedback
 
+def fetch_post(post_id):
+    page = PyQuery(facebook_base + '/gunnconfessions/posts/' + post_id, headers={'cookie': 'noscript=1'})
+    epic_script_tag = page.find('script').filter(is_epic_script_tag)
+    post_info = json.loads(epic_script_tag.text()[35:-2])
+
+    post_id_to_feedback = parse_posts(post_info)
+    return make_post(post_id_to_feedback, page.find('._3576').parent())
+
 def fetch_posts(path, first):
     if first:
         page = PyQuery(facebook_base + path)
@@ -116,4 +124,5 @@ def fetch_all_pages():
     return filename
 
 if __name__ == '__main__':
-    fetch_all_pages()
+    # fetch_all_pages()
+    print(fetch_post('2427310550649517'))
