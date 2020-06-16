@@ -62,6 +62,21 @@ def fetch_missing_posts(filename, max_conf=None, min_conf=1):
         file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
     return filename
 
+def get_missing_numbers(filename, max_conf=None, min_conf=1):
+    with open(filename, 'r', encoding='utf-8') as file:
+        confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
+
+    if max_conf == None:
+        max_conf = max(confessions.keys())
+
+    missing = '\n'.join(map(str, filter(lambda num: num not in confessions, range(min_conf, max_conf + 1))))
+
+    filename = './output/missing_nums_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(missing)
+    return filename
+
 if __name__ == '__main__':
     # fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
-    fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
+    # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
+    get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
