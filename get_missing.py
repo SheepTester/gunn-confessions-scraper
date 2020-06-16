@@ -89,8 +89,40 @@ def get_missing_numbers(filename, max_conf=None, min_conf=1):
         file.write(missing)
     return filename
 
+def fetch_missing_from_json(already_found, to_fetch):
+    with open(already_found, 'r', encoding='utf-8') as file:
+        confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
+
+    with open(to_fetch, 'r', encoding='utf-8') as file:
+        post_id_list = json.loads(file.read())
+
+    temp_file = open('./output/_posts_fetch_missing.json', 'w', encoding='utf-8')
+
+    since_last = 0
+    for conf_num, post_id in post_id_list.items():
+        if conf_num == 'null': continue
+        conf_num = int(conf_num)
+        if conf_num not in confessions:
+            confessions[conf_num] = scraper.fetch_post(post_id)
+            print('Found missing confession %d' % conf_num)
+
+            # Save every 20 iterations
+            since_last += 1
+            if since_last > 20:
+                temp_file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
+                since_last = 0
+                print('Saved')
+
+    temp_file.close()
+
+    filename = './output/fetched_missing_posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(missing)
+    return filename
+
 if __name__ == '__main__':
     # fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
     # get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
-    fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
+    # fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
+    fetch_missing_from_json('./output-dist/last_backup_2020-06-15_18.08.37.json', './output/userscript_2020-06-15.json')

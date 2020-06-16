@@ -14,4 +14,4 @@ def get_last_backup(backup_name):
     return filename
 
 if __name__ == '__main__':
-    get_last_backup('./output/_posts_less_missing.json')
+    get_last_backup('./output/_posts_fetch_missing.json')
