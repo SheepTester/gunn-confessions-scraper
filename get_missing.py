@@ -56,4 +56,5 @@ def fetch_missing_posts(filename, maxConf=None, minConf=1):
     return filename
 
 if __name__ == '__main__':
-    fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
+    # fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
+    fetch_missing_posts('./output/last_backup_2020-06-15_17.54.41.json', 8932)
