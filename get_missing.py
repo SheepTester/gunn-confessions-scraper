@@ -3,6 +3,7 @@ import urllib.parse
 import requests
 from pyquery import PyQuery
 from datetime import datetime
+import time
 
 import scraper
 import post
@@ -13,7 +14,13 @@ def make_search(query):
         'search_query': query
     }))
     path = '/ajax/pagelet/generic.php/PagePostsSearchResultsPagelet?data=%s&__a=1' % data
-    return scraper.parse_facebook_json(requests.get(scraper.facebook_base + path).text)
+    try:
+        parsed_json = scraper.parse_facebook_json(requests.get(scraper.facebook_base + path).text)
+    except:
+        print('There was a problem getting %s. Retrying in five seconds.' % query)
+        time.sleep(5)
+        parsed_json = scraper.parse_facebook_json(requests.get(scraper.facebook_base + path).text)
+    return parsed_json
 
 def parse_search(query):
     search = make_search(query)
@@ -22,20 +29,20 @@ def parse_search(query):
     return [scraper.make_post(post_id_to_feedback, confession) for confession in page.find('._307z').items()]
 
 # conf = confession
-def fetch_missing_posts(filename, maxConf=None, minConf=1):
+def fetch_missing_posts(filename, max_conf=None, min_conf=1):
     with open(filename, 'r', encoding='utf-8') as file:
         confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
 
     # Delete confession with key None (1st arg) and if it doesn't exist, return None (2nd arg)
     confessions.pop(None, None)
 
-    if maxConf == None:
-        maxConf = max(confessions.keys())
+    if max_conf == None:
+        max_conf = max(confessions.keys())
 
     temp_file = open('./output/_posts_less_missing.json', 'w', encoding='utf-8')
 
     since_last = 0
-    for i in range(maxConf, minConf - 1, -1):
+    for i in range(max_conf, min_conf - 1, -1):
         if i not in confessions:
             found = post.make_id_map(parse_search(str(i)))
             confessions.update(found)
@@ -57,4 +64,4 @@ def fetch_missing_posts(filename, maxConf=None, minConf=1):
 
 if __name__ == '__main__':
     # fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
-    fetch_missing_posts('./output/last_backup_2020-06-15_17.54.41.json', 8932)
+    fetch_missing_posts('./output/last_backup_2020-06-15_18.00.57.json', 8612)
