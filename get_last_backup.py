@@ -11,6 +11,7 @@ def get_last_backup(backup_name):
     filename = './output/last_backup_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(backups[-1])
+    print('Saved last backup to %s' % filename)
     return filename
 
 if __name__ == '__main__':

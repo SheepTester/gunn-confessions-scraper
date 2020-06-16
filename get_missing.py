@@ -29,6 +29,7 @@ def parse_search(query):
     return [scraper.make_post(post_id_to_feedback, confession) for confession in page.find('._307z').items()]
 
 # conf = confession
+# I have not tested the post_ids parameter since it has been superceded by fetch_missing_from_json
 def fetch_missing_posts(filename, max_conf=None, min_conf=1, post_ids=None):
     with open(filename, 'r', encoding='utf-8') as file:
         confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
@@ -117,7 +118,7 @@ def fetch_missing_from_json(already_found, to_fetch):
 
     filename = './output/fetched_missing_posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     with open(filename, 'w', encoding='utf-8') as file:
-        file.write(missing)
+        file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
     return filename
 
 if __name__ == '__main__':
@@ -125,4 +126,4 @@ if __name__ == '__main__':
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
     # get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
     # fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
-    fetch_missing_from_json('./output-dist/last_backup_2020-06-15_18.08.37.json', './output/userscript_2020-06-15.json')
+    fetch_missing_from_json('./output/last_backup_2020-06-16_13.10.19.json', './output/userscript_2020-06-15.json')
