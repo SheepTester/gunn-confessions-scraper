@@ -124,5 +124,4 @@ def fetch_all_pages():
     return filename
 
 if __name__ == '__main__':
-    # fetch_all_pages()
-    print(fetch_post('2427310550649517'))
+    fetch_all_pages()

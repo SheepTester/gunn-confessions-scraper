@@ -29,9 +29,13 @@ def parse_search(query):
     return [scraper.make_post(post_id_to_feedback, confession) for confession in page.find('._307z').items()]
 
 # conf = confession
-def fetch_missing_posts(filename, max_conf=None, min_conf=1):
+def fetch_missing_posts(filename, max_conf=None, min_conf=1, post_ids=None):
     with open(filename, 'r', encoding='utf-8') as file:
         confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
+
+    if post_ids:
+        with open(post_ids, 'r', encoding='utf-8') as file:
+            post_id_list = json.loads(file.read())
 
     # Delete confession with key None (1st arg) and if it doesn't exist, return None (2nd arg)
     confessions.pop(None, None)
@@ -44,9 +48,18 @@ def fetch_missing_posts(filename, max_conf=None, min_conf=1):
     since_last = 0
     for i in range(max_conf, min_conf - 1, -1):
         if i not in confessions:
-            found = post.make_id_map(parse_search(str(i)))
-            confessions.update(found)
-            print('Was missing confession #%d; found %s' % (i, ' '.join(map(str, found.keys())) or '[presumably deleted]'))
+            if post_ids == None:
+                found = post.make_id_map(parse_search(str(i)))
+                confessions.update(found)
+                print('Was missing confession #%d; found %s' % (i, ' '.join(map(str, found.keys())) or '[presumably deleted]'))
+            else:
+                conf_num = str(i)
+                post_id = post_id_list.get(conf_num)
+                if post_id:
+                    confessions[conf_num] = scraper.fetch_post(post_id)
+                    print('Found missing confession %d' % i)
+                else:
+                    print('Could not find missing confession %d' % i)
 
             # Save every 20 iterations
             since_last += 1
@@ -79,4 +92,5 @@ def get_missing_numbers(filename, max_conf=None, min_conf=1):
 if __name__ == '__main__':
     # fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
-    get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
+    # get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
+    fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
