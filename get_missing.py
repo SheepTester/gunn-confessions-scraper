@@ -84,7 +84,7 @@ def get_missing_numbers(filename, max_conf=None, min_conf=1):
     if max_conf == None:
         max_conf = max(confessions.keys())
 
-    missing = '\n'.join(map(str, filter(lambda num: num not in confessions, range(min_conf, max_conf + 1))))
+    missing = '\n'.join([str(num) for num in range(min_conf, max_conf + 1) if num not in confessions])
 
     filename = './output/missing_nums_%s.txt' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     with open(filename, 'w', encoding='utf-8') as file:
