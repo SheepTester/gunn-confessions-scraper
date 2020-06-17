@@ -18,13 +18,14 @@
     // Thanks Tim! https://www.facebook.com/page/1792991304081448/search?q=Gunn&filters=eyJycF9jcmVhdGlvbl90aW1lIjoie1wibmFtZVwiOlwiY3JlYXRpb25fdGltZVwiLFwiYXJnc1wiOlwie1xcXCJzdGFydF95ZWFyXFxcIjpcXFwiMjAyMFxcXCIsXFxcInN0YXJ0X21vbnRoXFxcIjpcXFwiMjAyMC0xXFxcIixcXFwiZW5kX3llYXJcXFwiOlxcXCIyMDIwXFxcIixcXFwiZW5kX21vbnRoXFxcIjpcXFwiMjAyMC0xXFxcIixcXFwic3RhcnRfZGF5XFxcIjpcXFwiMjAyMC0xLTFcXFwiLFxcXCJlbmRfZGF5XFxcIjpcXFwiMjAyMC0xLTdcXFwifVwifSJ9
     // Start point: https://www.facebook.com/page/gunnconfessions/search/?start=2019-10-17
 
-    const INTERVAL = 6 // One week interval
+    const INTERVAL = 6
+    const END = new Date(Date.UTC(2019, 2 - 1, 28)) // https://www.facebook.com/gunnconfessions/posts/2019518851428691
 
     const foundKey = '[gunn-confessions-scraper] v2.found'
 
     const mainSelector = '[role="main"]'
     const loadingSelector = '[role="progressbar"]'
-    const linkSelector = 'a[href^="https://www.facebook.com/gunnconfessions/posts/"'
+    const linkSelector = 'a[href^="https://www.facebook.com/gunnconfessions/posts/"]'
     const contentSelector = '.l9j0dhe7.stjgntxs.ni8dbmo4'
 
     function stringToDateUTC (str) {
@@ -107,8 +108,9 @@
     GM_setValue(foundKey, JSON.stringify(found))
 
     const { start, end } = parseFilter(params.get('filters'))
+    console.log('^', start.toISOString(), end.toISOString())
     start.setUTCDate(start.getUTCDate() - INTERVAL)
     end.setUTCDate(end.getUTCDate() - INTERVAL)
     params.set('filters', createFilter({ start, end }))
-    // window.location = '?' + params
+    // if (start <= END) window.location = '?' + params
 })()
