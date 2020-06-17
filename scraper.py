@@ -26,6 +26,7 @@ def search_json(matches, match_fn, json):
     return matches
 
 get_post_id = r'/posts/(\d+)'
+get_post_id_2 = r'feed_subtitle_1792991304081448;(\d+)' # For posts with photos
 external_link = 'l.facebook.com'
 
 def is_epic_script_tag(i, this):
@@ -38,7 +39,16 @@ def make_post(post_id_to_feedback, confessionWrapper):
 
     post_link = confessionWrapper.find('span > a._5pcq, ._lie')
     post_url = post_link.attr('href')
-    post_id = re.search(get_post_id, post_url).group(1)
+    post_id_search = re.search(get_post_id, post_url)
+    if not post_id_search:
+        post_link = post_link.closest('[id^="feed_subtitle_"]')
+        post_id_search = re.search(get_post_id_2, post_link.attr('id'))
+        if not post_id_search:
+            print(post_url)
+            with open('./output/photo_dumb.html', 'w', encoding='utf-8') as file:
+                file.write(confessionWrapper.html())
+            raise Exception('Could not find post ID in %s' % post_url)
+    post_id = post_id_search.group(1)
     feedback = post_id_to_feedback[post_id]
 
     timestamp = int(post_link.find('[data-utime]').attr('data-utime'))

@@ -130,4 +130,4 @@ if __name__ == '__main__':
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
     # get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
     # fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
-    fetch_missing_from_json('./output-dist/2020-06-15.json', './output/merged_backup_2020-06-16_15.18.22.json')
+    fetch_missing_from_json('./output/last_backup_2020-06-16_17.30.25.json', './output/merged_backup_2020-06-16_15.18.22.json')

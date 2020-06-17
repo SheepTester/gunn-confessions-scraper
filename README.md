@@ -48,3 +48,7 @@ There exists a `pdb` for debugging Python stuff. Do `python -m pdb -c continue s
 - `p expression` runs `expression`
 
 I should learn about PYTHONICISM
+
+### Gunn Confessions notes
+
+4918 has a photo which broke things
