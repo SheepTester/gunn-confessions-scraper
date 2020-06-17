@@ -74,6 +74,7 @@ def fetch_missing_posts(filename, max_conf=None, min_conf=1, post_ids=None):
     filename = './output/posts_%s_less_missing.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
+    print('Fetched missing posts in %s' % filename)
     return filename
 
 def get_missing_numbers(filename, max_conf=None, min_conf=1):
@@ -85,9 +86,10 @@ def get_missing_numbers(filename, max_conf=None, min_conf=1):
 
     missing = '\n'.join(map(str, filter(lambda num: num not in confessions, range(min_conf, max_conf + 1))))
 
-    filename = './output/missing_nums_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
+    filename = './output/missing_nums_%s.txt' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(missing)
+    print('Missing confession numbers in %s' % filename)
     return filename
 
 def fetch_missing_from_json(already_found, to_fetch):
@@ -131,11 +133,12 @@ def fetch_missing_from_json(already_found, to_fetch):
     filename = './output/fetched_missing_posts_%s.json' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
+    print('Fetched missing posts in %s' % filename)
     return filename
 
 if __name__ == '__main__':
     # fetch_missing_posts('./output-dist/posts_2020-03-29_16.21.50.json', 9632, 9000)
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
-    # get_missing_numbers('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536)
+    get_missing_numbers('./output-dist/2020-06-15.json')
     # fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
-    fetch_missing_from_json('./output/last_backup_2020-06-16_17.45.04.json', './output/merged_backup_2020-06-16_15.18.22.json')
+    # fetch_missing_from_json('./output/last_backup_2020-06-16_18.19.37.json', './output/merged_backup_2020-06-16_15.18.22.json')
