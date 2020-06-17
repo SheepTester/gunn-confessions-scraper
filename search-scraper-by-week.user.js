@@ -5,13 +5,20 @@
 // @description  Searches Gunn Confessions within a date range; start by doing ?start=<date>
 // @author       SheepTester
 // @match        *://www.facebook.com/page/gunnconfessions/search/*
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 
 (async function () {
     'use strict'
 
-    const INTERVAL = 7 // One week interval
+    document.zGM_getValue = (...args) => GM_getValue(...args)
+    document.zGM_setValue = (...args) => GM_setValue(...args)
+
+    // Thanks Tim! https://www.facebook.com/page/1792991304081448/search?q=Gunn&filters=eyJycF9jcmVhdGlvbl90aW1lIjoie1wibmFtZVwiOlwiY3JlYXRpb25fdGltZVwiLFwiYXJnc1wiOlwie1xcXCJzdGFydF95ZWFyXFxcIjpcXFwiMjAyMFxcXCIsXFxcInN0YXJ0X21vbnRoXFxcIjpcXFwiMjAyMC0xXFxcIixcXFwiZW5kX3llYXJcXFwiOlxcXCIyMDIwXFxcIixcXFwiZW5kX21vbnRoXFxcIjpcXFwiMjAyMC0xXFxcIixcXFwic3RhcnRfZGF5XFxcIjpcXFwiMjAyMC0xLTFcXFwiLFxcXCJlbmRfZGF5XFxcIjpcXFwiMjAyMC0xLTdcXFwifVwifSJ9
+    // Start point: https://www.facebook.com/page/gunnconfessions/search/?start=2019-10-17
+
+    const INTERVAL = 6 // One week interval
 
     const foundKey = '[gunn-confessions-scraper] v2.found'
 
@@ -43,10 +50,10 @@
                 name: 'creation_time',
                 args: JSON.stringify({
                     start_year: startPieces[0],
-                    start_month: startPieces.slice(0, 1).join('-'),
-                    start_day: startPieces.join('-'),
+                    start_month: startPieces.slice(0, 2).join('-'),
                     end_year: endPieces[0],
-                    end_month: endPieces.slice(0, 1).join('-'),
+                    end_month: endPieces.slice(0, 2).join('-'),
+                    start_day: startPieces.join('-'),
                     end_day: endPieces.join('-')
                 })
             })
@@ -74,7 +81,7 @@
         const start = new Date(end)
         start.setUTCDate(end.getUTCDate() - INTERVAL)
         params.set('q', 'Gunn')
-        params.set('filter', createFilter({
+        params.set('filters', createFilter({
             start,
             end
         }))
@@ -95,13 +102,13 @@
     ]))
     console.log(JSON.stringify(newFound, null, 2))
 
-    const found = JSON.parse(localStorage.getItem(foundKey)) || {}
+    const found = JSON.parse(GM_getValue(foundKey, null)) || {}
     Object.assign(found, newFound)
-    localStorage.setItem(foundKey, JSON.stringify(found))
+    GM_setValue(foundKey, JSON.stringify(found))
 
-    const { start, end } = parseFilter(params.get('filter'))
+    const { start, end } = parseFilter(params.get('filters'))
     start.setUTCDate(start.getUTCDate() - INTERVAL)
     end.setUTCDate(end.getUTCDate() - INTERVAL)
-    params.set('filter', createFilter({ start, end }))
-    window.location = '?' + params
+    params.set('filters', createFilter({ start, end }))
+    // window.location = '?' + params
 })()
