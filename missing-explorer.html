@@ -10,6 +10,7 @@
         <!-- <link rel="stylesheet" type="text/css" href="/sheep3.css">
         <script src="/sheep3.js" charset="utf-8"></script> -->
 
+        <link rel="stylesheet" href="https://sheeptester.github.io/sheep-sim/src/css/canvas.css">
         <style>
             html,
             body {
@@ -19,16 +20,22 @@
                 margin: 0;
                 background-color: #333;
             }
-            canvas {
+            #canvas-wrapper {
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
                 z-index: -1;
+            }
+            canvas {
                 image-rendering: crisp-edges;
                 image-rendering: pixelated;
             }
+            /* #scroll-sizer {
+                background-image: linear-gradient(45deg, black, transparent);
+                background-size: 20px 20px;
+            } */
             #hint {
                 background-color: rgba(0, 0, 0, 0.8);
                 border: 1px solid currentColor;
@@ -37,22 +44,44 @@
                 position: absolute;
                 white-space: nowrap;
             }
+            #select {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                box-shadow: inset 0 0 5px yellow;
+            }
         </style>
     </head>
     <body>
         <div id="scroll-sizer"></div>
-        <canvas id="canvas"></canvas>
+        <div id="canvas-wrapper"></div>
+        <div id="select"></div>
         <div id="hint"></div>
         <script type="module">
-            import { Canvas } from 'http://sheeptester.github.io/sheep-sim/src/view/canvas.mjs'
-            import { Vector2 } from 'http://sheeptester.github.io/sheep-sim/src/utils/vector2.mjs'
-            import { WindowResizeListener } from 'http://sheeptester.github.io/sheep-sim/src/view/window-resize-listener.mjs'
+            import { Canvas } from 'https://sheeptester.github.io/sheep-sim/src/view/canvas.mjs'
+            import { Vector2 } from 'https://sheeptester.github.io/sheep-sim/src/utils/vector2.mjs'
+            import { WindowResizeListener } from 'https://sheeptester.github.io/sheep-sim/src/view/window-resize-listener.mjs'
 
             const scrollSizer = document.getElementById('scroll-sizer')
             const hint = document.getElementById('hint')
+            const selected = document.getElementById('select')
 
-            const canvas = new Canvas({ canvas: document.getElementById('canvas') })
-                .setWrapper(document.body)
+            const canvas = new Canvas().setWrapper(document.getElementById('canvas-wrapper'))
+
+            function getSize (source) {
+                return new Vector2(source.width, source.height)
+            }
+            function setSize (target, { x, y }) {
+                target.width = x
+                target.height = y
+            }
+            function setOffset (target, { x, y }) {
+                target.left = x
+                target.top = y
+            }
+            function addPx (n) {
+                return n + 'px'
+            }
 
             function loadImage (src) {
                 return new Promise((resolve, reject) => {
@@ -69,6 +98,8 @@
 
             async function main () {
                 const image = await loadImage('./output-dist/missing.png')
+                const imageSize = getSize(image)
+                setSize(scrollSizer.style, imageSize.clone().scale(scale).map(addPx))
 
                 const html = document.documentElement
                 let scroll
@@ -100,15 +131,11 @@
                 })
                 await resizer.listen().resizeNow()
 
-                scrollSizer.style.width = image.width * scale + 'px'
-                scrollSizer.style.height = image.height * scale + 'px'
-
                 const tempCanvas = document.createElement('canvas')
                 const c = tempCanvas.getContext('2d')
-                tempCanvas.width = image.width
-                tempCanvas.height = image.height
+                setSize(tempCanvas, imageSize)
                 c.drawImage(image, 0, 0)
-                const data = c.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data
+                const data = c.getImageData(0, 0, ...getSize(tempCanvas)).data
 
                 const key = {
                     '0 0 0': '(empty)',
@@ -133,8 +160,8 @@
                     const index = confession * 4
                     const colour = key[data.slice(index, index + 3).join(' ')]
                     hint.textContent = `#${confession}: ${colour}`
-                    hint.style.left = mouse.x + 'px'
-                    hint.style.top = mouse.y + 'px'
+                    setOffset(hint.style, mouse.clone().map(addPx))
+                    setOffset(selected.style, pixel.clone().scale(scale).map(addPx))
                 }
                 window.addEventListener('pointerdown', update)
                 window.addEventListener('pointermove', update)
