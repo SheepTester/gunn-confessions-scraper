@@ -17,6 +17,7 @@
             }
             body {
                 margin: 0;
+                background-color: #333;
             }
             canvas {
                 position: fixed;
@@ -28,17 +29,26 @@
                 image-rendering: crisp-edges;
                 image-rendering: pixelated;
             }
+            #hint {
+                background-color: rgba(0, 0, 0, 0.8);
+                border: 1px solid currentColor;
+                color: rgba(255, 255, 255, 0.8);
+                padding: 10px 20px;
+                position: absolute;
+            }
         </style>
     </head>
     <body>
         <div id="scroll-sizer"></div>
         <canvas id="canvas"></canvas>
+        <div id="hint"></div>
         <script type="module">
             import { Canvas } from 'http://sheeptester.github.io/sheep-sim/src/view/canvas.mjs'
             import { Vector2 } from 'http://sheeptester.github.io/sheep-sim/src/utils/vector2.mjs'
             import { WindowResizeListener } from 'http://sheeptester.github.io/sheep-sim/src/view/window-resize-listener.mjs'
 
             const scrollSizer = document.getElementById('scroll-sizer')
+            const hint = document.getElementById('hint')
 
             const canvas = new Canvas({ canvas: document.getElementById('canvas') })
                 .setWrapper(document.body)
@@ -60,8 +70,9 @@
                 const image = await loadImage('./output-dist/missing.png')
 
                 const html = document.documentElement
+                let scroll
                 async function draw (measurementsDone) {
-                    const scroll = new Vector2(html.scrollLeft, html.scrollTop)
+                    scroll = new Vector2(html.scrollLeft, html.scrollTop)
                     await measurementsDone
 
                     const c = canvas.context
@@ -90,6 +101,32 @@
 
                 scrollSizer.style.width = image.width * scale + 'px'
                 scrollSizer.style.height = image.height * scale + 'px'
+
+                const tempCanvas = document.createElement('canvas')
+                const c = tempCanvas.getContext('2d')
+                tempCanvas.width = image.width
+                tempCanvas.height = image.height
+                c.drawImage(image, 0, 0)
+                const data = c.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data
+
+                const key = {
+                    '0 0 0': '(empty)',
+                    '200 200 200': 'Found',
+                    '220 220 220': 'Found',
+                    '200 50 50': 'Missing',
+                    '220 50 50': 'Missing',
+                    '50 200 200': 'Post ID found',
+                    '50 220 220': 'Post ID found, but currently not fetched'
+                }
+
+                window.addEventListener('pointermove', e => {
+                    const mouse = new Vector2(e.clientX, e.clientY).add(scroll)
+                    const pixel = mouse.clone().scale(1 / scale).map(Math.floor)
+                    const confession = pixel.y * image.width + pixel.x
+                    const index = confession * 4
+                    const colour = key[data.slice(index, index + 3).join(' ')]
+                    console.log(colour)
+                })
             }
 
             main()
