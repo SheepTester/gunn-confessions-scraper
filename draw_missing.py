@@ -13,11 +13,13 @@ colours = {
     'found_alt': (220, 220, 220),
     'missing': (200, 50, 50),
     'missing_alt': (220, 50, 50),
+    'truly_missing': (100, 50, 50),
+    'truly_missing_alt': (120, 50, 50),
     'has_post_id': (50, 200, 200),
     'has_post_id_alt': (50, 220, 220),
 }
 
-def create_missing_visual(found=None, searched=None):
+def create_missing_visual(found=None, searched=None, spreadsheet=None):
     if found:
         with open(found, 'r', encoding='utf-8') as file:
             confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
@@ -28,14 +30,20 @@ def create_missing_visual(found=None, searched=None):
 
     if searched:
         with open(searched, 'r', encoding='utf-8') as file:
-            has_post_id = set([int(num) for num in json.loads(file.read()).keys() if num != 'null'])
+            has_post_id = set(int(num) for num in json.loads(file.read()).keys() if num != 'null')
     else:
         has_post_id = set()
+
+    if spreadsheet:
+        with open(spreadsheet, 'r', encoding='utf-8') as file:
+            truly_missing = set(i + 1 for i, line in enumerate(file) if line.strip() == '')
+    else:
+        truly_missing = set()
 
     data = [colours['empty']] * max_conf
     for confession in range(1, max_conf):
         num = confession
-        colour = 'found' if num in confessions else 'has_post_id' if num in has_post_id else 'missing'
+        colour = 'found' if num in confessions else 'has_post_id' if num in has_post_id else 'truly_missing' if num in truly_missing else 'missing'
         thousands = math.floor(num / THOUSAND)
         data[confession] = colours[colour if thousands % 2 == 0 else colour + '_alt']
 
@@ -48,7 +56,9 @@ def create_missing_visual(found=None, searched=None):
     return save_target
 
 if __name__ == '__main__':
+    # https://docs.google.com/spreadsheets/d/e/2PACX-1vTJMHCAsgqtErQGbQyXs_UObhWllWCdEbKAQ5U2_zzE1XGL5FgTaLbXMjrbUOVTR4uzZAMyfMGFmShY/pub?gid=0&single=true&output=tsv
     create_missing_visual(
         found='./output-dist/2020-06-15.json',
         searched='./output/merged_backup_2020-06-16_15.18.22.json',
+        spreadsheet='./output/posts.tsv'
     )
