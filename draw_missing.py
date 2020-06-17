@@ -4,20 +4,43 @@ import post
 import math
 from datetime import datetime
 
-WIDTH = 1000
+WIDTH = 100
+THOUSAND = 1000
 
-def create_missing_visual(filename):
-    with open(filename, 'r', encoding='utf-8') as file:
-        confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
+colours = {
+    'empty': (0, 0, 0),
+    'found': (200, 200, 200),
+    'found_alt': (220, 220, 220),
+    'missing': (200, 50, 50),
+    'missing_alt': (220, 50, 50),
+    'has_post_id': (50, 200, 200),
+    'has_post_id_alt': (50, 220, 220),
+}
 
-    max_conf = max(confessions.keys())
+def create_missing_visual(found=None, searched=None):
+    if found:
+        with open(found, 'r', encoding='utf-8') as file:
+            confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
+        max_conf = max(confessions.keys())
+    else:
+        confessions = {}
+        max_conf = 1
 
-    data = [0] * max_conf
-    for confession in range(0, max_conf):
-        data[confession] = 0 if confession + 1 in confessions else 1
+    if searched:
+        with open(searched, 'r', encoding='utf-8') as file:
+            has_post_id = set([int(num) for num in json.loads(file.read()).keys() if num != 'null'])
+    else:
+        has_post_id = set()
+
+    data = [colours['empty']] * max_conf
+    for confession in range(1, max_conf):
+        num = confession
+        colour = 'found' if num in confessions else 'has_post_id' if num in has_post_id else 'missing'
+        thousands = math.floor(num / THOUSAND)
+        data[confession] = colours[colour if thousands % 2 == 0 else colour + '_alt']
 
     # https://stackoverflow.com/a/435215
-    image = Image.new('1', (WIDTH, math.ceil(max_conf / WIDTH)))
+    image = Image.new('RGB', (WIDTH, math.ceil(max_conf / WIDTH)), colours['empty'])
     image.putdata(data)
     save_target = './output/missing_%s.png' % datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
     image.save(save_target)
@@ -25,4 +48,7 @@ def create_missing_visual(filename):
     return save_target
 
 if __name__ == '__main__':
-    create_missing_visual('./output-dist/2020-06-15.json')
+    create_missing_visual(
+        found='./output-dist/2020-06-15.json',
+        searched='./output/merged_backup_2020-06-16_15.18.22.json',
+    )
