@@ -13,6 +13,7 @@
     'use strict'
 
     document.zGM_getValue = (...args) => GM_getValue(...args)
+    // JSON.parse(document.zGM_getValue(document.foundKey))
     document.zGM_setValue = (...args) => GM_setValue(...args)
 
     // Thanks Tim! https://www.facebook.com/page/1792991304081448/search?q=Gunn&filters=eyJycF9jcmVhdGlvbl90aW1lIjoie1wibmFtZVwiOlwiY3JlYXRpb25fdGltZVwiLFwiYXJnc1wiOlwie1xcXCJzdGFydF95ZWFyXFxcIjpcXFwiMjAyMFxcXCIsXFxcInN0YXJ0X21vbnRoXFxcIjpcXFwiMjAyMC0xXFxcIixcXFwiZW5kX3llYXJcXFwiOlxcXCIyMDIwXFxcIixcXFwiZW5kX21vbnRoXFxcIjpcXFwiMjAyMC0xXFxcIixcXFwic3RhcnRfZGF5XFxcIjpcXFwiMjAyMC0xLTFcXFwiLFxcXCJlbmRfZGF5XFxcIjpcXFwiMjAyMC0xLTdcXFwifVwifSJ9
@@ -22,6 +23,7 @@
     const END = new Date(Date.UTC(2019, 2 - 1, 28)) // https://www.facebook.com/gunnconfessions/posts/2019518851428691
 
     const foundKey = '[gunn-confessions-scraper] v2.found'
+    document.foundKey = foundKey
 
     const mainSelector = '[role="main"]'
     const loadingSelector = '[role="main"] [role="progressbar"]'

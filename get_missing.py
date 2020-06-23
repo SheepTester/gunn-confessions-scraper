@@ -104,12 +104,11 @@ def fetch_missing_from_json(already_found, to_fetch):
     since_last = 0
     for conf_num, post_id in post_id_list.items():
         if conf_num == 'null': continue
-        conf_num = int(conf_num)
-        if conf_num not in confessions:
+        if conf_num.startswith('worrying') or int(conf_num) not in confessions:
             try:
                 fetched = scraper.fetch_post(post_id)
             except:
-                print('There was a problem getting #%d. Retrying in five seconds.' % conf_num)
+                print('There was a problem getting #%s. Retrying in five seconds.' % conf_num)
                 temp_file.write(json.dumps([conf.serialize() for conf in confessions.values()], indent=2))
                 since_last = 0
                 print('Saved')
@@ -141,4 +140,4 @@ if __name__ == '__main__':
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
     # get_missing_numbers('./output-dist/2020-06-15.json')
     # fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
-    fetch_missing_from_json('./output/last_backup_2020-06-23_12.47.35.json', './output/merged_backup_2020-06-16_15.18.22.json')
+    fetch_missing_from_json('./output-dist/2020-06-15.json', './output/userscript_2020-06-23.json')

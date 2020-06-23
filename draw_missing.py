@@ -15,8 +15,8 @@ colours = {
     'missing_alt': (220, 50, 50),
     'truly_missing': (100, 50, 50),
     'truly_missing_alt': (120, 50, 50),
-    'has_post_id': (50, 200, 200),
-    'has_post_id_alt': (50, 220, 220),
+    'has_post_id': (50, 150, 200),
+    'has_post_id_alt': (50, 170, 220),
 }
 
 def create_missing_visual(found=None, searched=None, spreadsheet=None):
@@ -30,7 +30,7 @@ def create_missing_visual(found=None, searched=None, spreadsheet=None):
 
     if searched:
         with open(searched, 'r', encoding='utf-8') as file:
-            has_post_id = set(int(num) for num in json.loads(file.read()).keys() if num != 'null')
+            has_post_id = set(int(num) for num in json.loads(file.read()).keys() if num != 'null' and not num.startswith('worrying'))
     else:
         has_post_id = set()
 
@@ -59,6 +59,6 @@ if __name__ == '__main__':
     # https://docs.google.com/spreadsheets/d/e/2PACX-1vTJMHCAsgqtErQGbQyXs_UObhWllWCdEbKAQ5U2_zzE1XGL5FgTaLbXMjrbUOVTR4uzZAMyfMGFmShY/pub?gid=0&single=true&output=tsv
     create_missing_visual(
         found='./output-dist/2020-06-15.json',
-        searched='./output/merged_backup_2020-06-16_15.18.22.json',
+        searched='./output/userscript_2020-06-23.json',
         spreadsheet='./output/posts.tsv'
     )
