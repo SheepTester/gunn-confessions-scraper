@@ -52,3 +52,7 @@ I should learn about PYTHONICISM
 ### Gunn Confessions notes
 
 4918 has a photo which broke things
+
+[this post](https://facebook.com/gunnconfessions/posts/2139321829448392/) is not a confession
+
+[this](https://www.facebook.com/gunnconfessions/posts/2256474854399755/) and [this](https://www.facebook.com/gunnconfessions/posts/2256475181066389/) are both confessions 7588
