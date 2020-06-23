@@ -115,7 +115,7 @@ def fetch_missing_from_json(already_found, to_fetch):
                 time.sleep(5)
                 fetched = scraper.fetch_post(post_id)
             real_num = fetched.conf_num()
-            if real_num != conf_num:
+            if str(real_num) != conf_num:
                 print('Was fetching confession %s but got #%s?? (post ID %s)' % (conf_num, real_num, post_id))
             confessions[real_num] = fetched
             print('Found missing confession %s' % real_num)

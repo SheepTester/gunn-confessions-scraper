@@ -23,7 +23,7 @@ def create_missing_visual(found=None, searched=None, spreadsheet=None):
     if found:
         with open(found, 'r', encoding='utf-8') as file:
             confessions = post.make_id_map([post.deserialize(item) for item in json.loads(file.read())])
-        max_conf = max(confessions.keys())
+        max_conf = max(key for key in confessions.keys() if isinstance(key, int))
     else:
         confessions = {}
         max_conf = 1
