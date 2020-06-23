@@ -1,6 +1,6 @@
 import re
 
-confession_number_regex = r'(?:^|\n)(\d+)\. '
+confession_number_regex = r'(?:^|\n)(\d+)\.\s'
 
 class Post:
     def __init__(self, post_id, content, timestamp, comments, reactions):

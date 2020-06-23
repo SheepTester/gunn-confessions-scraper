@@ -117,9 +117,9 @@ def fetch_missing_from_json(already_found, to_fetch):
                 fetched = scraper.fetch_post(post_id)
             real_num = fetched.conf_num()
             if real_num != conf_num:
-                print('Was fetching confession %d but got #%d??' % (conf_num, real_num))
+                print('Was fetching confession %s but got #%s?? (post ID %s)' % (conf_num, real_num, post_id))
             confessions[real_num] = fetched
-            print('Found missing confession %d' % real_num)
+            print('Found missing confession %s' % real_num)
 
             # Save every 20 iterations
             since_last += 1
@@ -141,4 +141,4 @@ if __name__ == '__main__':
     # fetch_missing_posts('./output/last_backup_2020-06-15_18.08.37.json', 8536)
     # get_missing_numbers('./output-dist/2020-06-15.json')
     # fetch_missing_posts('./output-dist/last_backup_2020-06-15_18.08.37.json', 8536, 8286, './output/userscript_2020-06-15.json')
-    fetch_missing_from_json('./output-dist/2020-06-15.json', './output/merged_backup_2020-06-16_15.18.22.json')
+    fetch_missing_from_json('./output/last_backup_2020-06-23_12.47.35.json', './output/merged_backup_2020-06-16_15.18.22.json')
