@@ -68,6 +68,8 @@
 
             const canvas = new Canvas().setWrapper(document.getElementById('canvas-wrapper'))
 
+            const params = new URL(window.location).searchParams
+
             function getSize (source) {
                 return new Vector2(source.width, source.height)
             }
@@ -97,7 +99,7 @@
             const scale = 20
 
             async function main () {
-                const image = await loadImage('./output-dist/missing.png')
+                const image = await loadImage(params.get('image-url') || './output-dist/missing.png')
                 const imageSize = getSize(image)
                 setSize(scrollSizer.style, imageSize.clone().scale(scale).map(addPx))
 
