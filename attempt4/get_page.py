@@ -10,7 +10,7 @@ class Reaction:
         self.type = raw_reaction['node']['reaction_type'];
 
     def __repr__(self):
-        return f'{self.type} x{self.count}'
+        return f'{self.type} x{self.count}';
 
 class Comment:
     def __init__(self, raw_comment):
@@ -23,7 +23,7 @@ class Comment:
         # There's also `edit_history`
 
     def __repr__(self):
-        return f'{repr(self.content)} - {self.author}'
+        return f'{repr(self.content)} - {self.author}';
 
     def yaml(self, indent=''):
         yaml = indent + f'- author: {self.author}\n';
@@ -53,7 +53,11 @@ class Post:
         self.url = sections['context_layout']['story']['comet_sections']['timestamp']['story']['url'];
 
     def __repr__(self):
-        return f'{repr(self.content)} comments={self.comment_count} reactions={self.reaction_count} ({" ".join(map(repr, self.reactions))}) shares={self.share_count}' \
+        reactions = " ".join(map(repr, self.reactions));
+        return repr(self.content) \
+            + f' comments={self.comment_count}' \
+            + f' reactions={self.reaction_count} ({reactions})' \
+            + f' shares={self.share_count}' \
             + ''.join('\n' + repr(comment) for comment in self.comments);
 
     def yaml(self, indent=''):
@@ -87,8 +91,8 @@ class PageGetter:
 
         :param cursor: A string containing the next cursor to get the next set
         of posts, or `None` to get the first page.
-        :param count: The number of posts to get. The maximum is 297, for some
-        reason.
+        :param count: The number of posts to get. The maximum is at least 200,
+        but beyond that, Facebook seems to be not super reliable.
         :returns: A tuple with a list of `Post`s and the cursor for the next
         page, which may be None if you're on the last page.
         ''';
@@ -137,16 +141,16 @@ if __name__ == '__main__':
     load_dotenv();
 
     # Gunn Confessions
-    # page_getter = PageGetter('1792991304081448', '4130381023661578');
+    page_getter = PageGetter('1792991304081448', '4130381023661578');
 
     # Test confessions page
-    page_getter = PageGetter('634679850309851', '4130381023661578');
+    # page_getter = PageGetter('634679850309851', '4130381023661578');
 
     time = datetime.now().strftime('%Y-%m-%d_%H.%M.%S');
     with open(f'./output/a4_{time}.yml', 'a', encoding='utf8') as file:
         cursor = None;
         while True:
-            posts, cursor = page_getter.get_page(cursor, count=297);
+            posts, cursor = page_getter.get_page(cursor, count=200);
             file.write('\n'.join(post.yaml() for post in posts));
             if cursor is None:
                 break;
