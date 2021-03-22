@@ -1,0 +1,144 @@
+0000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000 .                                                                                                   
+100                                                                                                     
+200                                                                                                     
+300                                                                                                     
+400                                                                                                     
+500                                                                                                     
+600                                                                                                     
+700                                                                                                     
+800                                                                                                     
+900                                                                                                     
+1000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000                                                                                                     
+100                                                                                                     
+200                                                                                                     
+300                                                                                                     
+400                                                                                                     
+500                                                                                                     
+600                                                                                                     
+700                                                                                                     
+800                                                                                                     
+900                                                                                                     
+2000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000                                                                                                     
+100                                                                                                     
+200                                                                                                     
+300                                                                                                     
+400                                    X      X  XX  X X    XXX          X X XX X      X X XX    X  XXX 
+500   X     X XXXXX    X       XX     X   X  X        X   X   XX  X        XX    XX XX   X    XX        
+600 X XX   X X       XX X X XX  X XXXX  X XX X X    XX  X   XXXXXX XX X   X    X X  X XX  X   XX  XX X  
+700  X      X  XXXXX XX   X    X    X  XX        XX X  X     X      X X   X XXX X  XX    X  XXXXX X   XX
+800          XX  X X X     X  X X X       X    XXX  XX        X  X X        X  X XX XX   X              
+900  X       XXXX    X    X X X  X XX   X  X          X   X          X X X X   X XXX      XX   XX  X XXX
+3000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000    XX        X        X  X   XX   X X   XX   X   X    XX X    X  XX         XX      X           X  X
+100 X   X    X  X XX X X  X         XX         XXXXX  X   X  X    X   X          XX  X X   XXX  XXX     
+200      X   X    XX    X   X X      X X     XX  X XXX X X          X    X     X X    XX XX    X X  X   
+300 X   XX X  XX  XXX   XX    XX X  X   X       X   X     XX   X  XX XXX X     X  X   X XXXX X   X      
+400    X      X   X  XX  X     X    XX     XX    XXX       X X       X  X         XX XXXX X X    XX X   
+500  X X       XX      X  XX X  X   X X X    X        X  XX XX  X   XX    X X      X   XX     X X  X    
+600   XX  X     XX X           X   XX  XXXX XX  XX   XXX X XXXX X   X XX       X XXXXX      X   XX  XX  
+700     X XX X XX X   X  X  X X  X X X XX      XX    X   X  X X X        X    XXX X    X   XX     X X   
+800 X  X   X   XX   X    X X   XXX  X             X      X   X X X     X  X   X  X XX XX    X     XXX   
+900 X  X  X   X     X    XXX XX  X XXXXX   X       XX XX      X X X  X   XXX   XX X XX X  X      X X  X 
+4000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000            XXX     X X X X X XXX  X   XX   X  XXXX         XX        X X   X X XXX   X XX  XX   XX  
+100   X   X  X   X XX   X    XXX X X  X   X      XXX X         X  X  X XX      XXX XX  X  XXX   X  X X  
+200  X  XXX  X   XX  XX  X     XX X   XX     XX   XX   X   X  XX   XXX         X X       X  XXX XX   X X
+300 XXX    X    XX       XX    X XX  X     X X XX X X XX  X       X  XXXXX   XX       X     X   X X X  X
+400    XX     X XX    XX      XXXXXX XX       XX   XX X                                                 
+500                                                                                                     
+600                                                                                                     
+700                                                                                                     
+800                                                                                                     
+900                                                                                                     
+5000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000                                                                                                     
+100                                                                                                     
+200                                                                                                     
+300                                                                                                     
+400                                                XXX  XX      X X   X X  X   X  X   X     X   X       
+500     X      X X  X  X    X X X X  X  X      X  X      XX  X    X XX        X  X  X  X  X      X X    
+600  XX    X  X X        X  X  X X      X XX    X  X  X       XX  X   X   XXXXXX   X  X   X      X   X X
+700               XX  X XX   X XXX  X X XX        XXXX  XXXX X XX XX  XX   X X   X   X X XXXX XX  X X  X
+800   XXXXX X  XX       XX X  X    XXX       X  X X  X   XX XX   X   X  XX X        XX   X      X   X  X
+900   X XX     XX  X     X    XXXX  X X             X          XXX    XXXX  XX   X XX       XX X  X   X 
+6000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000    X X     X    X X     X      XXXX  XX XX X  XX  X    XX  XX  XX  X   X   X XXXX          X X  X   
+100         XX    X X   X  X X    X X X     X X   XX X  X  XXX     XX       X  XX   X      XXXXX  X     
+200    X XX     X  X  XXX    X         X X    XXX       X   X    X X XXXXX X XXX X  X  XX  XX       XX  
+300   X X      XX    X   XXX XX  X  X  XXX XXX   X X X   X         XX    XX X   X   XX        XX X      
+400      X  X     XX  X X    XXX    X      X XX  X  XX   X  X    XXX X    X   XX  X X      X  XXXXXX   X
+500   X        X     XX  X  X    X X  X XX XX X XXX       X X  XX X    X   XXXXX            XX XX  XXX  
+600    XXX   X X    XXX  XX      X XX XXXXXXX    X X      X     XX X  X X    X XXX  XX  X X  X X  X   X 
+700       XX    X   X XXX    X          XX X  X XXXX XXX X       X  XXX   X X     XXX   X   X X   X     
+800 X XXXX   XXX           X    XX        XX X  XX   X     X     X   XX X        X X    XX     X     X  
+900   X  X   XX XXX     X  X X  X XX   XXX X     X    XXX     XXXXX XX X      XXX   X   XXX   X  XXX    
+7000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000  X  X XXX  X  X  XX    X X X XX  X   X    XX   X    XX  XX  X      X       X XXXXX   XXXX  XX  X    
+100   X  X  X         X   X X   X  XX  X  X         X X    X X    XX   XX  X X  X X X X  XX   X    X  X 
+200 X X  X      XX X    XXX  X  X     XX X  XX X        XX        X XXX       XX X     XXXX X    X X XX 
+300  X     XXX    XXXX     X  XX X  X    X  X   X        X       XX XX   X X  XX X    XXX X         X   
+400    X     X XXX XX   X   X    X    XX  X   X    XXX     X      XX X      XX   X X    X   XX        X 
+500  X  XXX      X     XX XX XXXXXXXX     X   X     X   X   XXXX X  X X     XXX      XX      X X    X  X
+600     XXXX     XX XXX  X      X  X    XXXXX       XX X  X X   X    XX       X      XXX  X   X X  XX XX
+700 XX    X   X   X XX   X     X   X   XXX      X X   XX X X      X X X  X  X XX     XXX     X        X 
+800  X                XX   XXX    XX  X  XXX X  X XX  X X XX X      X  X  XX X X X   X  XX     XX X XX X
+900  XX      XXX   X   X       X  XX  X  XX         X   X X X X X  X XX         X X   X  X X     X   X  
+8000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000 X  XXX    X     X   XX XXX    X        X    XX X              XX  X  X   X XX X   X X  X X       X  
+100  X X  X X X   X   XX XX XX  XX   X    X    XXXXXX X X        XXXX    X       X X    XX   X       XX 
+200     XXX X X      X         XX     X XX    X    X   XXXX   X     X X X    XX  X      X        XX   X 
+300 X   XX X X  X     XX   X   X X     X   XX  X  XXXX X   X   X    XX       X   X   XX          XX     
+400  X XX  X    X   X XXX  X    X   X       X   XXX XXX        XXX  XX    XXX  XX XX   XX X   X    X    
+500    XX  XXXXX   X            X   X X  X XX       X X  XX   XX X   XXXXXX XXX  X    X   X   X    X  XX
+600 X X X XX XX     X X X   X       X     X            X    XX X X X         X XX  X XX        X   X  XX
+700 XX   XX  XXX X XXXXXXX X   X    XXXXX  X XXXXXX XX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXX X X  XXXXX X
+800 XXXXXX XXXXXXX  X XX XX XXX XXXXX    XXX    XXX XXXXXXX XX XXXXXXXX  X  XXX X  X XX  X X XXXXXX XXX 
+900  XXXXXX X   XXX  XXXXXXX XXXXXXXXXXX XXX X XX XX XX XXX  XX XXXX XXXX  X X X  XXXXXXX XX X XXX XX XX
+9000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000    XXXX XXXX XX  XX XXXXX XX XX X   XX  XXXXXX XXXXXX  XXX XXX XXXXX XXXXX  XXX X X X XX XXXXX XXX X
+100 XXX XXX   XX X XX   XXXXXXXXXXXXX   X XXXXXXX X XXX X X XXXX X XX  XXXXX XXXXXXXX    XXXXXX XXX  X  
+200 X   XXXX XX XXXXX XX  XXXXX  XX XX X  XXXX XX XXXX  XXX XXXXXXX  XX XXXX XXXXXX X X XXXXX  XX X XX X
+300 XXXXX   XX  XXXXXXXX  X XXX   XXXXXXXXXXXXXXX XX XXXX XXX XXXXXX  X XX XX   XX   XX  XXXXXXXXX  XXXX
+400 XXX  XXXXX XXXX    XXXX XXXX XXX XX   XX XXX XXXXXXXX X      XXX XXX  X  XXXX X X  XXX X   XXX X XXX
+500  XX X   XXXXXXXXX X XX X XX  XXXXXXXXXXXXXXX X  X XXX   XX X X X XX   XX XX XXXXXX XX   XX  XX XX  X
+600  XXXXX XXXXXXXXX XXX X    X XX  XX XXX XX X XXX    XXX   XX XXXXXX X X XX   XX XXX  XX  X   XXX XXXX
+700  XXXXXXXXXXXX  XXXXXX   XX X  X X XXXXX XX  XX XXX X XX X XX   X  XXXX XXXXX X X X  X XXX  X  X XX X
+800  X XX XX XX X X XX XXXXX XX XX X  XXXXXX X XXXX  XX XXX   XXX  XX X XX XX    XXX  X XX XXX  XX    XX
+900 XXX XXXXXXXX X XX XXXXX X  X XXX XXX X XXXXXX XX   XXXX XX XX XXX XXXX XXX XX  XX XX XXXXXXXX XXX XX
+10000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000   XXXXXXXXXX X XX XXXXX  X X  XXXXXXXXXX X XX XXXXX  XXX XX   XX X X XXX  X  XXXXX XXXXX  XX   XX X 
+100  XX XXX XXXX X    XX XX XX XXX X  X XXX XX XX    X   X   X  XXX XXXX XX X XXXXXXXXXXXXX XX XXXXX XX 
+200 X XXXXXX   XX  X X XXXX XX X  XXXX XX X XXX XX  XXX    XXXXXX XX XX  X  XXXXXXXXXX XXX X X X X  XXXX
+300 X XXXXX XX X X X X XXXX X XX  XXXX XXX X XX  XX X X XXXXXX   XXX  X XXXX XXXXX XX X XXX  XXXXX XXX  
+400 XXXXX X X X XXXX X  X XXXX X XXXXX XXXX XX X XXXXXXXXX XXXXX  XXXXXXX  XXXXXXXXXXXXXXX XXX X XXX XXX
+500 X XXXX XXXXXXXXXXX   XXX XXXXXXXX XXXX  XXXX    XXXXXX  XX  XXXXXX  XXXX  XXXXXXX   XXX  X  X  XXXX 
+600  X XX X   XX XXX X  X  XX X  X XX X XX   XXXX X XXXXXXXX XXXXX XX XX X X  X  XX   XXXX XX X X X X  X
+700 XXX X   X XXXXXXXXX  X  XXX X  X XX X XXXXX XX XX XXX  XXXXXXX XXXX XX  XXXXXX  XX XXXX X X XXXXX  X
+800 XX X XXXXX XXXX XX  XXXXXXXXX XX    XX  X X XXXXXXXXX     XXXXXX  XXXX XX  X   XXX XX X XXXXXX XXXXX
+900 XX X  X XX X XXXX    XX XX XXXX X XXX X XXXX X XXXXXXXX  X  XX X  X X  XXXXXX  XX   XX XXX X XXXX XX
+11000s
+--- [0x]456789[1x]456789[2x]456789[3x]456789[4x]456789[5x]456789[6x]456789[7x]456789[8x]456789[9x]456789
+000  X  X X  X  XXX XXX XX X X XXX XXX XXXXXXXXX XXX XXXX X    X   XXXX X    X  XXXXXXX X  XX XXXX XXXXX
+100 X XXXX XXX X XXX XX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+200 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+300 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+400 XXXXXXXXXXXXXXXXXXXXXXXX............................................................................
+500 ....................................................................................................
+600 ....................................................................................................
+700 ....................................................................................................
+800 ....................................................................................................
+900 ....................................................................................................
